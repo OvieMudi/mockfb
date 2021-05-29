@@ -21,9 +21,9 @@ app.set('view engine', 'hbs');
 
 app.use('/v1', indexRouter);
 
-app.all('/*', (req, res) =>
-  res.status(404).json({ status: false, message: 'This route does not exist' })
-);
+app.get('/*', (req, res) => res.json({ message: 'Welocome to Mock FB' }));
+
+app.post('/*', (req, res) => res.json({ message: 'Welocome to Mock FB' }));
 
 // global async handler
 app.use((error, req, res, next) => {

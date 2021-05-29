@@ -9,7 +9,8 @@
     "migrate:dev": "npx prisma migrate dev",
     "migrate:prod": "npx prisma migrate deploy",
     "migrate:create-only": "npx prisma migrate dev --create-only",
-    "heroku-postbuild": "npx prisma generate && npm run migrate:prod"
+    "migrate:generate": "npx prisma generate",
+    "heroku-postbuild": "npm run migrate:generate && npm run migrate:prod"
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",

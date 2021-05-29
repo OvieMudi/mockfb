@@ -21,7 +21,9 @@ const getPostById = async (id) =>
 
 const getAllPosts = async () =>
   handleDBError(prisma, async () => {
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany({
+      include: { likes: true },
+    });
     return serviceSuccessResponse(posts);
   });
 
@@ -52,6 +54,27 @@ const editPost = async (data) =>
     return serviceSuccessResponse(post);
   });
 
+const likePost = async (postId, userId) =>
+  handleDBError(prisma, async () => {
+    const existingPost = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+    if (!existingPost) return serviceErrorResponse(404, 'post does not exist');
+
+    const existingLike = await prisma.like.findFirst({
+      where: { postId, userId },
+    });
+    if (existingLike) {
+      await prisma.like.delete({ where: { id: existingLike.id } });
+      return serviceSuccessResponse(existingLike, 200, 'Post unliked');
+    }
+
+    const like = await prisma.like.create({
+      data: { postId, userId },
+    });
+    return serviceSuccessResponse(like, 200, 'Post liked');
+  });
+
 const deletePostById = async (id) =>
   handleDBError(prisma, async () => {
     const existingPost = await prisma.post.findUnique({ where: { id } });
@@ -70,5 +93,6 @@ export default {
   getAllPostsByUser,
   createPost,
   editPost,
+  likePost,
   deletePostById,
 };

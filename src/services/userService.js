@@ -14,7 +14,7 @@ import {
 
 dotenv.config();
 
-const { CLIENT_URL } = process.env;
+const { CLIENT_URL, SERVER_URL } = process.env;
 
 const { PrismaClient } = require('@prisma/client');
 
@@ -25,6 +25,9 @@ const { handleDBError } = errorHandler;
 const getAllUsers = async () =>
   handleDBError(prisma, async () => {
     const users = await prisma.user.findMany();
+    users.forEach((user) => {
+      delete user.password;
+    });
     return serviceSuccessResponse(users);
   });
 
@@ -42,7 +45,7 @@ const createUser = async (body) =>
     });
     user.password = undefined;
     user.token = signJwt({ id: user.id });
-    mailer.sendWelcomeEmail(user.email, user.name);
+    mailer.sendWelcomeEmail(user.email, user.name, SERVER_URL);
     return serviceSuccessResponse(user, 201);
   });
 
