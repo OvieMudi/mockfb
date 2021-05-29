@@ -18,6 +18,7 @@ model User {
   posts     Post[]
   likes     Like[]
   tokens    Token[]
+  role      Role      @default(publisher)
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 }
@@ -29,8 +30,8 @@ model Post {
   title     String   @db.VarChar(255)
   content   String?
   published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
+  author    User     @relation(fields: [userId], references: [id])
+  userId    String
   likes     Like[]
 }
 
@@ -57,4 +58,9 @@ model Token {
 enum TokenType {
   email
   sms
+}
+
+enum Role {
+  publisher
+  admin
 }

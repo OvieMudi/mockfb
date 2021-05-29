@@ -16,14 +16,14 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, '..', 'public')));
-app.set('views', `${__dirname}/../public/views`);
+app.set('views', join(__dirname, '..', 'public/views'));
 app.set('view engine', 'hbs');
 
 app.use('/v1', indexRouter);
 
-app.get('/*', (req, res) => res.json({ message: 'Welocome to Mock FB' }));
-
-app.post('/*', (req, res) => res.json({ message: 'Welocome to Mock FB' }));
+app.all('/*', (req, res) =>
+  res.status(404).json({ status: false, message: 'This route does not exist' })
+);
 
 // global async handler
 app.use((error, req, res, next) => {
