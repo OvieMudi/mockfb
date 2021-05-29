@@ -9,7 +9,10 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 const debug = require('debug')('tql:server');
-const app = require('../app').default;
+const app =
+  process.env.NODE_ENV === 'production'
+    ? require('../build/app').default
+    : require('../src/app').default;
 
 /**
  * Get port from environment and store in Express.
