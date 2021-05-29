@@ -5,6 +5,7 @@ import {
   getPost,
   editPost,
   deletePost,
+  likePost,
 } from '../controllers/postController';
 import authenticate from '../middleware/authenticate';
 import authorize from '../middleware/authorize';
@@ -18,6 +19,8 @@ postRouter.get('/:id', getPost);
 
 postRouter.post('/', authenticate, publishPost);
 postRouter.patch('/:id', authenticate, authorizeOwnerOnly('post'), editPost);
+
+postRouter.post('/:id/likes', authenticate, likePost);
 
 postRouter.delete('/:id', authenticate, authorizeOwner('post'), deletePost);
 

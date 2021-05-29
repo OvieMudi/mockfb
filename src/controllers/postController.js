@@ -78,6 +78,26 @@ const editPost = (req, res) =>
   });
 
 /**
+ * Like and unlike a post
+ * @param {Request} req - express request object
+ * @param {Response} res - express response object
+ * @returns {Response} express response object
+ */
+const likePost = (req, res) =>
+  handleControllerError(res, async () => {
+    const { id } = req.params;
+    const { id: userId } = req.user;
+    const { success, data, code, message } = await postService.likePost(
+      id,
+      userId
+    );
+    if (success) {
+      return res.status(code).json({ status: true, data, message });
+    }
+    return res.status(code).json({ status: false, message });
+  });
+
+/**
  * Delete a post by id
  * @param {Request} req - express request object
  * @param {Response} res - express response object
@@ -95,4 +115,4 @@ const deletePost = (req, res) =>
     return res.status(code).json({ status: false, message });
   });
 
-export { getPost, getAllPosts, publishPost, editPost, deletePost };
+export { getPost, getAllPosts, publishPost, editPost, likePost, deletePost };
