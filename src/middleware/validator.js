@@ -41,9 +41,17 @@ const validateResetPassword = () => [
   validate,
 ];
 
+const validateFileUpload = () => [
+  body('image')
+    .custom((value, { req }) => req.file.mimetype.includes('image'))
+    .withMessage('This file type is not supported'),
+  validate,
+];
+
 export default {
   validateLogin,
   validateRegister,
   validatePasswordResetInit,
   validateResetPassword,
+  validateFileUpload,
 };

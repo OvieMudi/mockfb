@@ -27,16 +27,18 @@ model User {
 }
 
 model Post {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [userId], references: [id])
-  userId    String
+  id                String   @id @default(uuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  title             String   @db.VarChar(255)
+  content           String?
+  published         Boolean  @default(false)
+  author            User     @relation(fields: [userId], references: [id])
+  userId            String
   /// @onDelete(CASCADE)
-  likes     Like[]
+  likes             Like[]
+  imageThumbnailUrl String?
+  imageUrl          String?
 }
 
 model Like {

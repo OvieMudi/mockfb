@@ -13,7 +13,7 @@ const app = express();
 
 app.use(logger('dev'));
 app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, '..', 'public')));
 app.set('views', join(__dirname, '..', 'public/views'));
@@ -28,9 +28,13 @@ app.post('/*', (req, res) => res.json({ message: 'Welocome to Mock FB' }));
 // global async handler
 app.use((error, req, res, next) => {
   log(error);
-  res
-    .status(500)
-    .json({ error: 'Oops! An error occurred on our server. Please retry.' });
+  let code = 500;
+  let message = 'Oops! An error occurred on our server. Please retry.';
+  if (error.code === 'LIMIT_FILE_SIZE') {
+    code = 400;
+    message = 'File too large';
+  }
+  return res.status(code).json({ status: false, message });
 });
 
 export default app;

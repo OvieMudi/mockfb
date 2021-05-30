@@ -14,7 +14,10 @@ const { handleDBError } = errorHandler;
 
 const getPostById = async (id) =>
   handleDBError(prisma, async () => {
-    const post = await prisma.post.findUnique({ where: { id } });
+    const post = await prisma.post.findUnique({
+      where: { id },
+      include: { likes: true },
+    });
     if (post) return serviceSuccessResponse(post);
     return serviceErrorResponse(404, 'Post does not exist');
   });
@@ -29,14 +32,21 @@ const getAllPosts = async () =>
 
 const getAllPostsByUser = async (userId) =>
   handleDBError(prisma, async () => {
-    const posts = await prisma.post.findMany({ where: { userId } });
+    const posts = await prisma.post.findMany({
+      where: { userId },
+      include: { likes: true },
+    });
     return serviceSuccessResponse(posts);
   });
 
 const createPost = async (data) =>
   handleDBError(prisma, async () => {
     const post = await prisma.post.create({
-      data,
+      data: {
+        imageThumbnailUrl: 'http://image.com',
+        imageUrl: 'http://image.com',
+        ...data,
+      },
     });
     return serviceSuccessResponse(post, 201);
   });

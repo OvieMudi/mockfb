@@ -24,7 +24,7 @@ const handleDBError = (prisma, cb) =>
  */
 const handleAsyncError = (cb) =>
   cb().catch((err) => {
-    log(err);
+    log(':general', err);
     return serviceErrorResponse();
   });
 /**
@@ -35,7 +35,7 @@ const handleAsyncError = (cb) =>
  */
 const handleControllerError = (res, cb) =>
   cb().catch((err) => {
-    log(err);
+    log(':controller', err);
     return res
       .status(422)
       .json({ status: false, message: 'Cannot proccess request' });
