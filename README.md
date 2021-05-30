@@ -46,5 +46,5 @@ heroku config:set NPM_CONFIG_PRODUCTION=false
 heroku config:set DATABASE_URL=false CLIENT_URL="https://frontend.url" ...
 ```
 
-View the [demo](https://mock-fb-mockfb.herokuapp.com/v1).\
+View the [demo](https://mock-fb-tql.herokuapp.com/v1).\
 Explore the [API documentation](https://documenter.getpostman.com/view/4783528/TzRa74Ge).
